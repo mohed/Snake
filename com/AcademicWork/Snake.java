@@ -6,38 +6,49 @@ import java.util.List;
 public class Snake {
 
     public List<Part> parts = new ArrayList<>();
-    public Part posOfLastPart;
+    public Part posOfLastPart = new Part(0, 0);
+    public Part head = new Part(10, 10);
+    Part holder = new Part(0, 0);
 
     public Snake() {
-        parts.add(new Part(10, 10));
+        parts.add(head);
     }
 
-    public void moveSnake(String keyhistory) {
-        posOfLastPart = this.parts.get(0);
+    public void moveSnake(char key) {
+        posOfLastPart.copyLocation(head);
 
-
-        switch (keyhistory.charAt(0)) {
+        switch (key) {
             case 'U':
-                this.parts.get(0).y -= 1;
+                head.y -= 1;
                 break;
             case 'D':
-                this.parts.get(0).y += 1;
+                head.y += 1;
                 break;
             case 'L':
-                this.parts.get(0).x -= 1;
+                head.x -= 1;
                 break;
             case 'R':
-                this.parts.get(0).x += 1;
+                head.x += 1;
                 break;
         }
-        for (int i = parts.size()-1; i > 0; i--){
-            Part holder = new Part(parts.get(i).x, parts.get(i).y);
-            this.parts.get(i).x = posOfLastPart.x;
-            this.parts.get(i).y = posOfLastPart.y;
-            posOfLastPart = holder;
+
+        for (int i = 1; i < parts.size(); i++) {
+            holder.copyLocation(parts.get(i)); //posOfLastPart);
+            parts.get(i).copyLocation(posOfLastPart);
+            posOfLastPart.copyLocation(holder);
         }
 
-        // }
+    }
 
+    public boolean isAlive() {
+        if (head.x == 0 || head.y == 0 || head.x == 30 || head.y == 30) {
+            return false;
+        }
+        for (int i = 1; i < parts.size(); i++) {
+            if (head.hasSamePosition(parts.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
