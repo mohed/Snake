@@ -32,8 +32,8 @@ public class Main {
             snake.moveSnake(presentKey);
             if (snake.parts.get(0).x == food.x && snake.parts.get(0).y == food.y) {
                 snake.parts.add(new Part(snake.posOfLastPart.x, snake.posOfLastPart.y));
-                food.x = random.nextInt(20);
-                food.y = random.nextInt(20);
+                food.x = random.nextInt(28)+1;
+                food.y = random.nextInt(28)+1;
             }
             updateTerminal(terminal, snake, food);
             alive = snake.isAlive();
